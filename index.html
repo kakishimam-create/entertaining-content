@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>毎日おもしろ動画メーカー</title>
+<style>
+:root{--ink:#202334;--muted:#697086;--paper:#f6f7fb;--card:#fff;--accent:#6d4aff;--accent2:#ffb84d;--line:#e5e7f0}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f5f2ff,#f8fbff 55%,#fff8ed);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;color:var(--ink)}
+.wrap{max-width:1050px;margin:auto;padding:28px 18px 60px}.hero{padding:28px;border-radius:24px;background:#24213c;color:#fff;position:relative;overflow:hidden}.hero:after{content:"😂";font-size:110px;position:absolute;right:28px;top:10px;opacity:.18;transform:rotate(12deg)}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#c7bcff;font-weight:800}.hero h1{font-size:clamp(28px,5vw,44px);margin:10px 0}.hero p{max-width:650px;color:#e0def0;line-height:1.7;margin:0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;margin-top:18px;box-shadow:0 8px 28px #2d2b4910}
+.controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.field label{display:block;font-weight:750;font-size:13px;margin-bottom:8px}.field select,.field input{width:100%;padding:12px;border:1px solid #d9dbea;border-radius:12px;background:white;color:var(--ink);font:inherit}
+button{border:0;border-radius:12px;padding:13px 17px;font:inherit;font-weight:800;cursor:pointer;transition:.15s}button:hover{transform:translateY(-1px)}.primary{background:var(--accent);color:#fff}.secondary{background:#f0edff;color:#4d35c9}.dark{background:#25233b;color:white}.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.badge{display:inline-flex;align-items:center;background:#fff1d9;color:#875100;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800}
+h2{font-size:21px;margin:0 0 14px}h3{font-size:15px;margin:0 0 8px}.idea-title{font-size:clamp(24px,4vw,34px);line-height:1.35;margin:12px 0}.muted{color:var(--muted);line-height:1.7}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.tile{background:#fafaff;border:1px solid var(--line);border-radius:15px;padding:16px}.tile p{margin:0;line-height:1.75;white-space:pre-wrap}.script{white-space:pre-wrap;line-height:1.8;background:#f8f8fc;border:1px solid var(--line);padding:16px;border-radius:14px}
+.prompt{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;line-height:1.7;white-space:pre-wrap;background:#24213c;color:#f4f1ff;padding:17px;border-radius:14px;overflow-wrap:anywhere}
+.note{font-size:12px;color:var(--muted);line-height:1.7}.toast{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#24213c;color:#fff;padding:12px 18px;border-radius:999px;box-shadow:0 8px 30px #0002;z-index:5}
+@media(max-width:700px){.controls,.grid{grid-template-columns:1fr}.hero:after{right:8px;top:12px;font-size:72px}.hero{padding:22px}.panel{padding:17px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">DAILY AI COMEDY STUDIO</div>
+    <h1>毎日おもしろ動画メーカー 😂</h1>
+    <p>1日1本、クスッと笑える短編動画のネタを自動で考えます。台本・シーン構成・動画生成AIに渡すプロンプトまでまとめて作成。仕事中にも共有しやすい、安心して笑える内容が基本です。</p>
+  </header>
+
+  <section class="panel">
+    <div class="topline"><h2>今日の動画をつくる</h2><span class="badge" id="dateBadge">今日の1本</span></div>
+    <div class="controls">
+      <div class="field"><label for="genre">笑いのジャンル</label><select id="genre"><option value="random">おまかせ</option><option value="日常の勘違い">日常の勘違い</option><option value="AIあるある">AIあるある</option><option value="職場の小ネタ">職場の小ネタ（誰も傷つけない）</option><option value="動物の予想外行動">動物の予想外行動</option><option value="未来の生活">未来の生活</option><option value="シュール">シュール・不条理</option></select></div>
+      <div class="field"><label for="length">動画の長さ</label><select id="length"><option value="15秒">15秒（ショート）</option><option value="30秒" selected>30秒</option><option value="45秒">45秒</option></select></div>
+      <div class="field"><label for="style">映像の雰囲気</label><select id="style"><option>実写風</option><option>アニメ風</option><option>ストップモーション風</option><option>ドキュメンタリー風</option><option>映画予告風</option></select></div>
+    </div>
+    <div class="btnrow"><button class="primary" id="generate">🎬 今日のネタを作成</button><button class="secondary" id="newIdea">🔀 別のネタにする</button><button class="dark" id="copyAll">📋 台本・プロンプトをコピー</button></div>
+    <p class="note">※このページは動画の企画・台本・生成プロンプトを作ります。完成動画そのものをレンダリングするには、別途動画生成AIサービスへの入力、またはAPI連携が必要です。</p>
+  </section>
+
+  <section class="panel" id="result" aria-live="polite">
+    <div class="topline"><h2>今日のアイデア</h2><span class="badge" id="savedBadge">まだ作成していません</span></div>
+    <div id="ideaArea"><p class="muted">「今日のネタを作成」を押すと、タイトル・オチ・台本・シーン構成がここに表示されます。</p></div>
+  </section>
+  <section class="panel">
+    <div class="topline"><h2>毎日使うコツ</h2></div>
+    <div class="grid">
+      <div class="tile"><h3>① ネタを決める</h3><p>ジャンルを選んで、毎日のネタを作成。気に入らなければ「別のネタにする」で変更できます。</p></div>
+      <div class="tile"><h3>② 動画にする</h3><p>動画生成プロンプトをコピーし、利用中の動画生成AIに貼り付けます。字幕やセリフは生成後に編集すると安定します。</p></div>
+      <div class="tile"><h3>③ 共有前にチェック</h3><p>個人情報、実在する人の顔・声、著作権のあるキャラクターや音楽を避け、職場で共有して問題ない内容か確認しましょう。</p></div>
+      <div class="tile"><h3>④ 1日1本を続ける</h3><p>このブラウザに今日の案を保存します。毎日自動で動画を生成・配信するには、定期実行と動画生成AIのAPI連携を追加してください。</p></div>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast">コピーしました！</div>
+<script>
+const ideas = [
+ {g:"日常の勘違い",t:"スマートスピーカーに人生相談",hook:"真剣な相談の答えが、まさかの一言。",scenes:[["0〜4秒","主人公がスマートスピーカーに小声で相談。「人生、どうしたらうまくいく？」"],["4〜10秒","スピーカーが考えるように沈黙。主人公は身を乗り出す。"],["10〜15秒","スピーカーが答える。「まず、Wi-Fiを再起動してください」"],["15〜終わり","主人公、深くうなずいてルーターを持って去る。"]],punch:"人生の悩みまで、まず再起動。"},
+ {g:"AIあるある",t:"AIに完璧な休日を計画してもらった結果",hook:"予定が完璧すぎて、休む時間がない。",scenes:[["0〜5秒","主人公がAIに「最高の休日を計画して」と頼む。"],["5〜12秒","画面に分刻みの予定が高速表示。ストレッチ、朝食、散歩、読書、瞑想……"],["12〜20秒","主人公が「休憩は？」と聞く。AIが「休憩の最適化を開始します」と返す。"],["20秒〜終わり","主人公、布団に戻って「今日は計画を休む計画にする」。"]],punch:"効率化しすぎて、休日が業務になる。"},
+ {g:"職場の小ネタ",t:"会議で一番発言した人",hook:"全員が驚く、会議の意外な主役。",scenes:[["0〜5秒","会議室。全員が真剣な表情で資料を見ている。"],["5〜12秒","誰かが発言するたび、隅の観葉植物が風でゆらゆら揺れる。"],["12〜20秒","司会が「今日、一番うなずいてくれたのは……この植物です！」と発表。"],["20秒〜終わり","全員が植物に拍手。植物だけが堂々と葉を揺らす。"]],punch:"会議への参加姿勢、満点。"},
+ {g:"動物の予想外行動",t:"猫のオンライン会議",hook:"会議を仕切るのは、キーボードの上の猫。",scenes:[["0〜5秒","人間がオンライン会議で「それでは始めます」と話し始める。"],["5〜12秒","猫がキーボードの上に座り、画面に謎の文字が大量入力される。"],["12〜20秒","参加者が「議事録、もう完成ですか？」と感心。"],["20秒〜終わり","猫がカメラを見て一鳴き。画面に『承認しました』のテロップ。"]],punch:"最年少なのに、決裁が早い。"},
+ {g:"未来の生活",t:"家事ロボットの休日",hook:"ロボットにも休みが必要だった。",scenes:[["0〜5秒","家事ロボットが床をピカピカに掃除。人間が満足げに見守る。"],["5〜12秒","ロボットが突然停止し、胸元に『本日のやる気：2％』と表示。"],["12〜20秒","人間が「故障？」と聞くと、ロボットがソファに移動してクッションを抱える。"],["20秒〜終わり","ロボットが「本日はセルフケアの日です」と宣言。人間が掃除機を持つ。"]],punch:"便利な未来、最後は人力。"},
+ {g:"シュール",t:"自動ドアに認められたい人",hook:"開かないのは故障？それとも審査中？",scenes:[["0〜5秒","主人公が自動ドアの前に立つが、ドアが開かない。"],["5〜12秒","主人公が姿勢を正し、笑顔でお辞儀。ドアは無反応。"],["12〜20秒","主人公が履歴書を差し出すような仕草。ドアがゆっくり開く。"],["20秒〜終わり","主人公が小さくガッツポーズして入店。ドアに『採用』のテロップ。"]],punch:"入店にも面接がある時代。"},
+ {g:"日常の勘違い",t:"目覚まし時計との交渉",hook:"あと5分だけ、が交渉決裂。",scenes:[["0〜5秒","寝ぼけた主人公が目覚まし時計に「あと5分だけ」と頼む。"],["5〜12秒","時計が無言でスヌーズ。主人公が勝った顔をする。"],["12〜20秒","時計の画面に『5分後：月曜日です』と表示。"],["20秒〜終わり","主人公が飛び起きる。時計が小さく『交渉成立』と表示。"]],punch:"勝ったと思ったら、相手は時間のプロ。"}
+];
+let current=null;
+const $=id=>document.getElementById(id);
+const todayKey=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+function chooseIdea(force=false){
+ const genre=$('genre').value;
+ let pool=ideas.filter(x=>genre==='random'||x.g===genre);
+ if(!pool.length)pool=ideas;
+ let item=pool[Math.floor(Math.random()*pool.length)];
+ if(force&&pool.length>1&&current){let tries=0;while(item.t===current.t&&tries++<10)item=pool[Math.floor(Math.random()*pool.length)]}
+ current={...item,length:$('length').value,style:$('style').value,date:todayKey()};
+ render(); localStorage.setItem('dailyFunnyVideo:'+todayKey(),JSON.stringify(current));
+}
+function promptText(){
+ if(!current)return '';
+ return `縦型ショート動画（9:16）、${current.length}、${current.style}。ジャンル：${current.g}。\nタイトル：「${current.t}」\n${current.scenes.map((s,i)=>`シーン${i+1}（${s[0]}）：${s[1]}`).join('\n')}\nオチ：${current.punch}\n雰囲気：テンポよく、表情と間で笑わせる、親しみやすく安全なユーモア。映像は自然で一貫した登場人物・小道具を維持。画面内に意味不明な文字を生成しない。実在人物・既存キャラクター・有名作品に似せない。最後にオチが伝わる短い間を入れる。`;
+}
+function render(){
+ if(!current)return;
+ $('dateBadge').textContent='📅 '+current.date;
+ $('savedBadge').textContent='今日の案を保存済み';
+ const scenes=current.scenes.map(s=>`<div class="tile"><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join('');
+ const script=current.scenes.map(s=>`${s[0]}：${s[1]}`).join('\n')+`\n\nオチ：${current.punch}`;
+ $('ideaArea').innerHTML=`<span class="badge">${current.g} ・ ${current.length} ・ ${current.style}</span><div class="idea-title">${current.t}</div><p class="muted">${current.hook}</p><div class="grid">${scenes}</div><h3 style="margin-top:20px">🎙️ 台本・演出メモ</h3><div class="script">${escapeHtml(script)}</div><div class="topline" style="margin-top:22px"><h3>🤖 動画生成AI用プロンプト</h3><button class="secondary" id="copyPrompt">プロンプトをコピー</button></div><div class="prompt">${escapeHtml(promptText())}</div>`;
+ $('copyPrompt').addEventListener('click',()=>copy(promptText()));
+}
+function escapeHtml(s){return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
+async function copy(text){try{await navigator.clipboard.writeText(text)}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',1800)}
+$('generate').addEventListener('click',()=>chooseIdea(false));
+$('newIdea').addEventListener('click',()=>chooseIdea(true));
+$('copyAll').addEventListener('click',()=>{if(!current)chooseIdea();copy(`タイトル：${current.t}\n${current.hook}\n\n台本：\n${current.scenes.map(s=>`${s[0]}：${s[1]}`).join('\n')}\nオチ：${current.punch}\n\n動画生成プロンプト：\n${promptText()}`)});
+const saved=localStorage.getItem('dailyFunnyVideo:'+todayKey());
+if(saved){try{current=JSON.parse(saved);render()}catch(e){chooseIdea()}}else{chooseIdea()}
+</script>
+</body>
+</html>

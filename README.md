@@ -1,0 +1,2 @@
+# entertaining-content
+おもしろコンテンツ
